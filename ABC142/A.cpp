@@ -60,17 +60,10 @@ signed main() {
 	ios::sync_with_stdio(false);
   cin.tie(nullptr);
 	//小数の桁数の出力指定
-  int n;
+  cout<<fixed<<setprecision(10);
+	int n;
 	cin >> n;
-	vector<pair<int,int> > a(n);
-	REP(i,n){
-		cin >> a[i].first;
-		a[i].second = i+1;
-	}
-	sort(a.begin(), a.end());
-	REP(i,n){
-		cout << a[i].second;
-		if(i != n-1) cout << " ";
-		else cout << endl;
-	}
+	int c = 0;
+	FOR(i,1,n) if(i % 2 == 1)++c;
+	cout << c/(double)n << endl;
 }

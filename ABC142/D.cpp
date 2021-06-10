@@ -56,21 +56,32 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 
+vector<pair<long long, long long> > prime_factorize(long long N) {
+    vector<pair<long long, long long> > res;
+    for (long long a = 2; a * a <= N; ++a) {
+        if (N % a != 0) continue;
+        long long ex = 0; // 指数
+
+        // 割れる限り割り続ける
+        while (N % a == 0) {
+            ++ex;
+            N /= a;
+        }
+        res.push_back({a, ex});
+    }
+
+    // 最後に残った数について
+    if (N != 1) res.push_back({N, 1});
+    return res;
+}
+
 signed main() {
 	ios::sync_with_stdio(false);
   cin.tie(nullptr);
 	//小数の桁数の出力指定
-  int n;
-	cin >> n;
-	vector<pair<int,int> > a(n);
-	REP(i,n){
-		cin >> a[i].first;
-		a[i].second = i+1;
-	}
-	sort(a.begin(), a.end());
-	REP(i,n){
-		cout << a[i].second;
-		if(i != n-1) cout << " ";
-		else cout << endl;
-	}
+  ll a, b;
+	cin >> a >> b;
+	ll gcdM = GCD(a, b);
+	auto pf = prime_factorize(gcdM);
+	cout << pf.size() + 1 << endl;
 }
