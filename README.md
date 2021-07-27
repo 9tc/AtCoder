@@ -1,5 +1,5 @@
 # AtCoder
-AtCoderため置き (C以上解いたものだけ)
+AtCoderため置き
 
 AtCoder : https://atcoder.jp/users/dokaraya
 
