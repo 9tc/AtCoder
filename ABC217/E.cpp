@@ -63,19 +63,29 @@ signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int l, q;
-	cin >> l >> q;
-	set<int> st;
-	st.insert(0);
-	st.insert(l);
-	int c, x;
-	REP(times, q){
-		cin >> c >> x;
-		if(c == 1){
-			st.insert(x);
+	int q;
+	cin >> q;
+	int type, x;
+	queue<int> que;
+	priority_queue<int,VI, greater<int>> pque;
+	bool three = false;
+	REP(k,q){
+		cin >> type;
+		if(type == 1){
+			cin >> x;
+			que.push(x);
+		}else if(type == 2){
+			if(pque.empty()){
+				cout << que.front() << endl;
+				que.pop();
+			}else{
+				cout << pque.top() << endl;
+				pque.pop();
+			}
 		}else{
-			auto it = st.lower_bound(x);
-			cout << *it - *prev(it) << endl;
+			while(!que.empty()) {
+				pque.push(que.front()); que.pop();
+			}
 		}
 	}
 }

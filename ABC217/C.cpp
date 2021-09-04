@@ -58,24 +58,22 @@ inline T LCM(T a, T b) {
 using namespace std;
 //using namespace atcoder;
 
-
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int l, q;
-	cin >> l >> q;
-	set<int> st;
-	st.insert(0);
-	st.insert(l);
-	int c, x;
-	REP(times, q){
-		cin >> c >> x;
-		if(c == 1){
-			st.insert(x);
-		}else{
-			auto it = st.lower_bound(x);
-			cout << *it - *prev(it) << endl;
-		}
+	int n;
+	cin >> n;
+	vector<pair<int,int> > p(n);
+	REP(i,n) {
+		p[i].second = i+1;
+		cin >> p[i].first;
 	}
+
+	sort(ALL(p));
+
+	REP(i,n){
+		cout << p[i].second << " ";
+	}
+	cout << endl;
 }

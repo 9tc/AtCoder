@@ -58,24 +58,11 @@ inline T LCM(T a, T b) {
 using namespace std;
 //using namespace atcoder;
 
-
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int l, q;
-	cin >> l >> q;
-	set<int> st;
-	st.insert(0);
-	st.insert(l);
-	int c, x;
-	REP(times, q){
-		cin >> c >> x;
-		if(c == 1){
-			st.insert(x);
-		}else{
-			auto it = st.lower_bound(x);
-			cout << *it - *prev(it) << endl;
-		}
-	}
+	string s, t;
+	cin >> s >> t;
+	YesNo(s < t);
 }
