@@ -1,4 +1,5 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
 //#include <atcoder/all>
 using ll = long long;
 #define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
@@ -58,33 +59,14 @@ inline T LCM(T a, T b) {
 using namespace std;
 //using namespace atcoder;
 
+
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
 	int n;
 	cin >> n;
-	VI x(n), y(n);
-	REP(i, n) cin >> x[i] >> y[i];
-
-	VPII p;
-	map<PII, int> m;
-	REP(i, n-1) FOR(j, i+1, n-1) {
-    if (y[i] == y[j]) {
-      if (x[i] < x[j]) {
-        //p.push_back(make_pair(x[i], x[j] - x[i]));
-        ++m[make_pair(x[i], x[j] - x[i])];
-      } else {
-        //p.push_back(make_pair(x[j], x[i] - x[j]));
-        ++m[make_pair(x[j], x[i] - x[j])];
-      }
-    }
-	}
-
-	ll ans = 0;
-	for(auto t: m) {
-    ans += (t.second * (t.second - 1)) / 2;
-	}
-
-	cout << ans << endl;
+	string s;
+	cin >> s;
+	YesNo(s[n-1] == 'o');
 }
