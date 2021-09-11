@@ -67,15 +67,12 @@ signed main(){
 	VI x(n), y(n);
 	REP(i, n) cin >> x[i] >> y[i];
 
-	VPII p;
 	map<PII, int> m;
 	REP(i, n-1) FOR(j, i+1, n-1) {
     if (y[i] == y[j]) {
       if (x[i] < x[j]) {
-        //p.push_back(make_pair(x[i], x[j] - x[i]));
         ++m[make_pair(x[i], x[j] - x[i])];
       } else {
-        //p.push_back(make_pair(x[j], x[i] - x[j]));
         ++m[make_pair(x[j], x[i] - x[j])];
       }
     }
