@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include <atcoder/all>
+//#include <atcoder/all>
 using ll = long long;
 #define REP(i, n) for (int i = 0; (i) < ll(n); ++ (i))
 #define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
@@ -56,69 +56,39 @@ inline T LCM(T a, T b) {
 }
 
 using namespace std;
-using namespace atcoder;
+//using namespace atcoder;
 
-struct UnionFind {
-    vector<int> par;
-
-    UnionFind() { }
-    UnionFind(int n) : par(n, -1) { }
-    void init(int n) { par.assign(n, -1); }
-
-    int root(int x) {
-        if (par[x] < 0) return x;
-        else return par[x] = root(par[x]);
-    }
-
-    bool issame(int x, int y) {
-        return root(x) == root(y);
-    }
-
-    bool merge(int x, int y) {
-        x = root(x); y = root(y);
-        if (x == y) return false;
-        if (par[x] > par[y]) swap(x, y); // merge technique
-        par[x] += par[y];
-        par[y] = x;
-        return true;
-    }
-
-    int size(int x) {
-        return -par[root(x)];
-    }
-};
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	VI vil;
-	int t;
-	REP(i,4) REP(j,4){
-		cin >> t;
-		if(t == 1) vil.push_back(i*4 + j);
+	string s;
+	cin >> s;
+	ll k;
+	cin >> k;
+	ll pc = 0;
+	VPII po;
+	int x = 0, y = 0;
+	for(char c: s){
+		po.push_back(make_pair(x, y));
+		if(c == 'L') --x;
+		else if(c == 'R') ++x;
+		else if(c == 'U') ++y;
+		else --y;
 	}
-
-	ll count = 0;
-	UnionFind uf(16);
-	for (int bit = 0; bit < (1<<16); ++bit) {
-		vector<int> s;
-    REP(i, 16) if (bit & (1<<i)) s.push_back(i);
-		vector<bool> grid(16, false);
-		for(int i: s){
-			grid[i] = true;
-			if(i % 4 != 0 && grid[i-1]) uf.merge(i, i-1);
-			if(i > 3 && grid[i-4]) uf.merge(i, i-4);
-		}
-		bool isans = true;
-
-		REP(i, vil.size()-1){
-			if(!uf.issame(vil[i], vil[i+1])){
-				isans = false;
-				break;
+	po.push_back(make_pair(x, y));
+	sort(ALL(po));
+	po.erase(unique(po.begin(), po.end()), po.end());
+	pc = 1LL * po.size();
+	ll kas = 0;
+	for(int i = 0; i < po.size()-1; ++i){
+		for(int j = i+1; j < po.size(); ++j){
+			if(po[i].first == po[j].first + x && po[i].second == po[j].second + y){
+				++kas;
 			}
 		}
-		if(isans) ++count;
 	}
-	cout << count << endl;
+	cout << pc << endl;
+	cout << pc * k - kas * (k-1) << endl;
 }

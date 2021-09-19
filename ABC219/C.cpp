@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
-#include <atcoder/all>
+//#include <atcoder/all>
 using ll = long long;
-#define REP(i, n) for (int i = 0; (i) < ll(n); ++ (i))
+#define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
 #define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
 #define REPR(i, n) for (ll i = ll(n) - 1; (i) >= 0; -- (i))
 #define FOR3R(i, m, n) for (ll i = ll(n) - 1; (i) >= ll(m); -- (i))
@@ -56,69 +56,34 @@ inline T LCM(T a, T b) {
 }
 
 using namespace std;
-using namespace atcoder;
+//using namespace atcoder;
+string x;
+bool f(string s1, string s2){
+	REP(i,min(s1.length(), s2.length())){
+		char c1 = s1[i];
+		char c2 = s2[i];
+		int i1, i2;
+		REP(i, 26){
+			if(x[i] == c1) i1 = i;
+			if(x[i] == c2) i2 = i;
+		}
+		if(i1 != i2) return i1 < i2;
+	}
+	return s1.length() < s2.length();
+}
 
-struct UnionFind {
-    vector<int> par;
-
-    UnionFind() { }
-    UnionFind(int n) : par(n, -1) { }
-    void init(int n) { par.assign(n, -1); }
-
-    int root(int x) {
-        if (par[x] < 0) return x;
-        else return par[x] = root(par[x]);
-    }
-
-    bool issame(int x, int y) {
-        return root(x) == root(y);
-    }
-
-    bool merge(int x, int y) {
-        x = root(x); y = root(y);
-        if (x == y) return false;
-        if (par[x] > par[y]) swap(x, y); // merge technique
-        par[x] += par[y];
-        par[y] = x;
-        return true;
-    }
-
-    int size(int x) {
-        return -par[root(x)];
-    }
-};
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	VI vil;
-	int t;
-	REP(i,4) REP(j,4){
-		cin >> t;
-		if(t == 1) vil.push_back(i*4 + j);
-	}
+	cin >> x;
+	int n;
+	cin >> n;
+	vector<string> s(n);
+	REP(i,n) cin >> s[i];
 
-	ll count = 0;
-	UnionFind uf(16);
-	for (int bit = 0; bit < (1<<16); ++bit) {
-		vector<int> s;
-    REP(i, 16) if (bit & (1<<i)) s.push_back(i);
-		vector<bool> grid(16, false);
-		for(int i: s){
-			grid[i] = true;
-			if(i % 4 != 0 && grid[i-1]) uf.merge(i, i-1);
-			if(i > 3 && grid[i-4]) uf.merge(i, i-4);
-		}
-		bool isans = true;
+	sort(ALL(s), f);
+	REP(i,n) cout << s[i] << endl;
 
-		REP(i, vil.size()-1){
-			if(!uf.issame(vil[i], vil[i+1])){
-				isans = false;
-				break;
-			}
-		}
-		if(isans) ++count;
-	}
-	cout << count << endl;
 }

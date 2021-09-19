@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include <atcoder/all>
+//#include <atcoder/all>
 using ll = long long;
 #define REP(i, n) for (int i = 0; (i) < ll(n); ++ (i))
 #define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
@@ -56,69 +56,40 @@ inline T LCM(T a, T b) {
 }
 
 using namespace std;
-using namespace atcoder;
+//using namespace atcoder;
 
-struct UnionFind {
-    vector<int> par;
-
-    UnionFind() { }
-    UnionFind(int n) : par(n, -1) { }
-    void init(int n) { par.assign(n, -1); }
-
-    int root(int x) {
-        if (par[x] < 0) return x;
-        else return par[x] = root(par[x]);
-    }
-
-    bool issame(int x, int y) {
-        return root(x) == root(y);
-    }
-
-    bool merge(int x, int y) {
-        x = root(x); y = root(y);
-        if (x == y) return false;
-        if (par[x] > par[y]) swap(x, y); // merge technique
-        par[x] += par[y];
-        par[y] = x;
-        return true;
-    }
-
-    int size(int x) {
-        return -par[root(x)];
-    }
-};
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	VI vil;
-	int t;
-	REP(i,4) REP(j,4){
-		cin >> t;
-		if(t == 1) vil.push_back(i*4 + j);
-	}
-
-	ll count = 0;
-	UnionFind uf(16);
-	for (int bit = 0; bit < (1<<16); ++bit) {
-		vector<int> s;
-    REP(i, 16) if (bit & (1<<i)) s.push_back(i);
-		vector<bool> grid(16, false);
-		for(int i: s){
-			grid[i] = true;
-			if(i % 4 != 0 && grid[i-1]) uf.merge(i, i-1);
-			if(i > 3 && grid[i-4]) uf.merge(i, i-4);
-		}
-		bool isans = true;
-
-		REP(i, vil.size()-1){
-			if(!uf.issame(vil[i], vil[i+1])){
-				isans = false;
-				break;
+	int n;
+	cin >> n;
+	int x, y;
+	cin >> x >> y;
+	VPII ab(n);
+	REP(i,n) cin >> ab[i].F >> ab[i].S;
+	vector<vector<vector<int> > > dp(n+1, vector<vector<int> >(x+1, vector<int>(y+1, INF)));
+	dp[0][0][0] = 0;
+	REP(i,n){
+		REP(j, x+1){
+			REP(k, y+1){
+				if(dp[i][j][k] == INF) continue;
+				chmin(dp[i+1][j][k], dp[i][j][k]);
+				chmin(dp[i+1][min(x, j + ab[i].F)][min(y, k + ab[i].S)], dp[i][j][k] + 1);
 			}
 		}
-		if(isans) ++count;
 	}
-	cout << count << endl;
+
+	/*REP(i,n+1){
+		REP(j,x+1){
+			REP(k,y+1) cout << dp[i][j][k] << " ";
+			cout << endl;
+		}
+		cout << endl;
+	}
+	*/
+
+	if(dp[n][x][y] == INF) cout << -1 << endl;
+	else cout << dp[n][x][y] << endl;
 }
