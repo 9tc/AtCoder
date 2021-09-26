@@ -63,13 +63,25 @@ signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
-	cin >> n;
+	ll n, k;
+	cin >> n >> k;
 	VI a(n);
 	REP(i,n) cin >> a[i];
-	int t = 0;
-	REP(i,n){
-		if(a[i] % 2 == 1) ++t;
+
+	ll tmpA = 0;
+	REP(i,n-1){
+		FOR(j,i+1,n-1){
+			if(a[i] > a[j]) ++tmpA;
+		}
 	}
-	YESNO(t % 2 == 0);
+
+	ll tmpB = 0;
+	REP(i,n){
+		REP(j,n){
+			if(i == j) continue;
+			if(a[i] > a[j]) ++tmpB;
+		}
+	}
+
+	cout << (tmpA * k % 1000000007 + (tmpB * ((k * (k-1) / 2) % 1000000007)) % 1000000007) % 1000000007 << endl;
 }
