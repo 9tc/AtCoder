@@ -62,24 +62,24 @@ signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
+	string n;
 	cin >> n;
-	VPII p;
-	int a, b;
-	REP(i,n){
-		cin >> a >> b;
-		p.PB({a, 1});
-		p.PB({a+b, -1});
-	}
-	sort(ALL(p));
-	VI ans(n, 0);
-	int cnt = 0;
+	ll ans = 0;
 
-	REP(i,p.size()-1){
-		cnt += p[i].S;
-		if(0 < cnt && cnt <= n) ans[cnt-1] += (p[i+1].F - p[i].F);
-	}
+	for (int bit = 0; bit < (1<<(n.length())); ++bit) {
+        vector<int> s, t;
+        for (int i = 0; i < n.length(); ++i) {
+            if (bit & (1<<i)) { // 列挙に i が含まれるか
+                s.PB(n[i] - '0');
+            }else t.PB(n[i] - '0');
+        }
+				sort(ALL(s), greater<int>());
+				sort(ALL(t), greater<int>());
+				int s0 = 0, t0 = 0;
+				for(int i: s) s0 = s0 * 10 + i;
+				for(int i: t) t0 = t0 * 10 + i;
 
-	REP(i,n) cout << ans[i] << " ";
-	cout << endl;
+        chmax(ans, 1LL * s0 * t0);
+    }
+		cout << ans << endl;
 }
