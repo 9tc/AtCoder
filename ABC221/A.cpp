@@ -1,10 +1,7 @@
 #include<bits/stdc++.h>
-#include <atcoder/all>
-using ll = long long;
-#define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
-#define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
-#define REPR(i, n) for (ll i = ll(n) - 1; (i) >= 0; -- (i))
-#define FOR3R(i, m, n) for (ll i = ll(n) - 1; (i) >= ll(m); -- (i))
+using ll= long long;
+#define REP(i,n) for(ll i=0;i<ll(n);i++)
+#define FOR(i,a,b) for(ll i=a;i<=ll(b);i++)
 #define ALL(x) x.begin(),x.end()
 
 #define INF (int)1e9 //10^9:∞
@@ -19,10 +16,11 @@ using ll = long long;
 #define yesno(T) if(T){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
 #define YesNo(T) if(T){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
 
+#define Graph vector<vector<int>>
 #define PII pair<int,int>
 #define VI vector<int>
-#define VVI vector<vector<int> > //VVI a(n, vector<int>(m));
-#define VPII vector<pair<int,int> >
+#define VVI vector<vector<int>> //VVI a(n, vector<int>(m));
+#define VPII vector<pair<int,int>>
 
 #define DDD fixed<<setprecision(10)
 
@@ -55,31 +53,20 @@ inline T LCM(T a, T b) {
 }
 
 using namespace std;
-using namespace atcoder;
 
+ll f(int i){
+	if(i == 0) return 1;
+	else return 32 * f(i-1);
+}
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
+  //小数の桁数の出力指定
+  //cout<<fixed<<setprecision(10);
 
-	int n;
-	cin >> n;
-	VPII p;
 	int a, b;
-	REP(i,n){
-		cin >> a >> b;
-		p.PB({a, 1});
-		p.PB({a+b, -1});
-	}
-	sort(ALL(p));
-	VI ans(n, 0);
-	int cnt = 0;
+	cin >> a >> b;
 
-	REP(i,p.size()-1){
-		cnt += p[i].S;
-		if(0 < cnt && cnt <= n) ans[cnt-1] += (p[i+1].F - p[i].F);
-	}
-
-	REP(i,n) cout << ans[i] << " ";
-	cout << endl;
+	cout << f(a-b) << endl;
 }
