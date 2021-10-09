@@ -56,25 +56,42 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-using mint = modint998244353;
+
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
-	cin >> n;
-	VI a(n);
-	REP(i,n) cin >> a[i];
-	VI b(n);
-	REP(i,n) cin >> b[i];
-	vector<vector<mint> > dp(n+1, vector<mint>(3001, 0));
-	dp[0][0] = 1;
-	REP(i,n+1){
-		REP(j, 3000) dp[i][j+1] += dp[i][j];
-		if(i != n){
-			FOR(j, a[i], b[i]) dp[i+1][j] += dp[i][j];
+	int n, m;
+	cin >> n >> m;
+	vector<string> a(2 * n);
+	REP(i,2 * n) cin >> a[i];
+	vector<pair<int,int> > gcp(2*n);
+	REP(i, 2*n) gcp[i] = make_pair(0, i);
+	REP(j,m){
+		int f = -1, s = -1;
+		for(int i = 0; i < 2*n; i += 2){
+			if(a[gcp[i].S][j] == a[gcp[i+1].S][j]){
+				++gcp[i].F;
+				++gcp[i+1].F;
+				continue;
+			}
+			if(a[gcp[i].S][j] == 'G'){
+				if(a[gcp[i+1].S][j] == 'P') ++gcp[i].F;
+				else ++gcp[i+1].F;
+			}else if(a[gcp[i].S][j] == 'C'){
+				if(a[gcp[i+1].S][j] == 'P') ++gcp[i+1].F;
+				else ++gcp[i].F;
+			}else{
+				if(a[gcp[i+1].S][j] == 'G') ++gcp[i+1].F;
+				else ++gcp[i].F;
+			}
 		}
+		sort(ALL(gcp));
 	}
-	cout << dp[n][3000].val() << endl;
+
+	REP(i,2 * n){
+		cout << gcp[i].S + 1 << endl;
+	}
+
 }

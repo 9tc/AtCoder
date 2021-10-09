@@ -64,17 +64,26 @@ signed main(){
 
 	int n;
 	cin >> n;
-	VI a(n);
-	REP(i,n) cin >> a[i];
-	VI b(n);
-	REP(i,n) cin >> b[i];
-	vector<vector<mint> > dp(n+1, vector<mint>(3001, 0));
+	VI a(n+1);
+	a[0] = 0;
+	REP(i,n) cin >> a[i+1];
+	VI b(n+1);
+	b[0] = 0;
+	REP(i,n) cin >> b[i+1];
+	vector<vector<mint> > dp(n+1, vector<mint>(3000, 0));
 	dp[0][0] = 1;
-	REP(i,n+1){
-		REP(j, 3000) dp[i][j+1] += dp[i][j];
-		if(i != n){
-			FOR(j, a[i], b[i]) dp[i+1][j] += dp[i][j];
+	REP(i,n){
+		FOR(j, min(a[i], b[i]), max(a[i+1], b[i+1])){
+			if(dp[i][j].val() != 0){
+				FOR(k, max(j, (ll)a[i+1]), b[i+1]){
+					dp[i+1][k] += dp[i][j].val();
+				}
+			}
 		}
 	}
-	cout << dp[n][3000].val() << endl;
+	mint ans = 0;
+	REP(i, 3001){
+		ans += dp[n][i].val();
+	}
+	cout << ans.val() << endl;
 }
