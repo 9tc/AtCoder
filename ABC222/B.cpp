@@ -56,25 +56,19 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-using mint = modint998244353;
+
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
-	cin >> n;
-	VI a(n);
-	REP(i,n) cin >> a[i];
-	VI b(n);
-	REP(i,n) cin >> b[i];
-	vector<vector<mint> > dp(n+1, vector<mint>(3001, 0));
-	dp[0][0] = 1;
-	REP(i,n+1){
-		REP(j, 3000) dp[i][j+1] += dp[i][j];
-		if(i != n){
-			FOR(j, a[i], b[i]) dp[i+1][j] += dp[i][j];
-		}
+	int n, p;
+	cin >> n >> p;
+	int t;
+	int ans = 0;
+	REP(i,n){
+		cin >> t;
+		if(t < p) ++ans;
 	}
-	cout << dp[n][3000].val() << endl;
+	cout << ans << endl;
 }
