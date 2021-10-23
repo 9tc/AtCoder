@@ -19,7 +19,6 @@ using ll = long long;
 #define yesno(T) if(T){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
 #define YesNo(T) if(T){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
 
-#define Graph vector<vector<int> >
 #define PII pair<int,int>
 #define VI vector<int>
 #define VVI vector<vector<int> > //VVI a(n, vector<int>(m));
@@ -57,23 +56,27 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-
+using mint = modint998244353;
 
 signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
-  cin >> n;
-  vector<pair<ll, ll> > p(n);
-  for(auto &nx: p) cin >> nx.F >> nx.S;
-  int res = 0;
-  REP(i,n){
-    FOR(j,i+1,n-1){
-      FOR(k,j+1,n-1){
-        if((p[j].F - p[i].F)*(p[k].S-p[i].S)-(p[k].F-p[i].F)*(p[j].S-p[i].S) != 0) res++;
-      }
-    }
-  }
-  cout << res << endl;
+	int h, w;
+	cin >> h >> w;
+	VVI a(h, vector<int>(w));
+	REP(i,h) REP(j,w) cin >> a[i][j];
+
+	bool ans = true;
+	REP(i1, h){
+		FOR(i2, i1+1, h-1){
+			REP(j1, w){
+				FOR(j2, j1+1, w-1){
+					if(a[i1][j1] + a[i2][j2] > a[i2][j1] + a[i1][j2]) ans = false;
+				}
+			}
+		}
+	}
+
+	YesNo(ans);
 }

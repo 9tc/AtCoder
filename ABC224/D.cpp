@@ -63,17 +63,44 @@ signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n;
-  cin >> n;
-  vector<pair<ll, ll> > p(n);
-  for(auto &nx: p) cin >> nx.F >> nx.S;
-  int res = 0;
-  REP(i,n){
-    FOR(j,i+1,n-1){
-      FOR(k,j+1,n-1){
-        if((p[j].F - p[i].F)*(p[k].S-p[i].S)-(p[k].F-p[i].F)*(p[j].S-p[i].S) != 0) res++;
-      }
-    }
-  }
-  cout << res << endl;
+	int m;
+	cin >> m;
+
+	VVI g(9);
+	int u, v;
+	REP(i,m){
+		cin >> u >> v;
+		--u; --v;
+		g[u].PB(v);
+		g[v].PB(u);
+	}
+
+	int p;
+	string s = "999999999";
+	REP(i,8){
+		cin >> p;
+		s[p-1] = i+1 + '0';
+	}
+
+	queue<string> que;
+	que.push(s);
+	map<string, int> mp;
+	mp[s] = 0;
+
+	while(!que.empty()){
+		string s = que.front(); que.pop();
+		//cout << s << endl;
+		REP(i,9) if(s[i] == '9') v = i;
+
+		for(auto u: g[v]){
+			string t = s;
+			swap(t[u], t[v]);
+			if(mp.count(t)) continue;
+			mp[t] = mp[s] + 1;
+			que.push(t);
+		}
+	}
+
+	if(mp.count("123456789") == 0) cout << -1 << endl;
+	else cout << mp["123456789"] << endl;
 }
