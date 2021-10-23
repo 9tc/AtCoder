@@ -63,5 +63,20 @@ signed main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	
+	int h, w;
+	cin >> h >> w;
+	VVI a(h, VI(w));
+	VI sumH(h, 0), sumW(w, 0);
+	REP(i,h) REP(j,w) {
+		cin >> a[i][j];
+		sumH[i] += a[i][j];
+		sumW[j] += a[i][j];
+	}
+
+	REP(i,h){
+		REP(j,w){
+			cout << sumH[i] + sumW[j] - a[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
