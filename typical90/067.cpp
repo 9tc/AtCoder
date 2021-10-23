@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <list>
 #include <atcoder/all>
 using ll = long long;
 #define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
@@ -19,6 +20,7 @@ using ll = long long;
 #define yesno(T) if(T){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
 #define YesNo(T) if(T){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
 
+#define Graph vector<vector<int> >
 #define PII pair<int,int>
 #define VI vector<int>
 #define VVI vector<vector<int> > //VVI a(n, vector<int>(m));
@@ -56,34 +58,51 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-using mint = modint998244353;
+
+string fix8to5(string s){
+	for(int i = 0; i < s.length(); ++i){
+		if(s[i] == '8') s[i] = '5';
+	}
+	return s;
+}
+
+ll base8tobase10(string n){
+	ll r = 0;
+	ll x = 1;
+	for(int i = n.length()-1; i >= 0; --i){
+		r += 1LL * (n[i] - '0') * x;
+		x *= 8;
+	}
+	return r;
+}
+
+string base10tobase9(ll n){
+	string r;
+	while(n > 0){
+		char c = ((n % 9) + '0');
+		r = c + r;
+		n /= 9;
+	}
+	return r;
+}
+
 
 signed main(){
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int n;
-	cin >> n;
-	VI a(n+1);
-	a[0] = 0;
-	REP(i,n) cin >> a[i+1];
-	VI b(n+1);
-	b[0] = 0;
-	REP(i,n) cin >> b[i+1];
-	vector<vector<mint> > dp(n+1, vector<mint>(3000, 0));
-	dp[0][0] = 1;
-	REP(i,n){
-		FOR(j, min(a[i], b[i]), max(a[i+1], b[i+1])){
-			if(dp[i][j].val() != 0){
-				FOR(k, max(j, (ll)a[i+1]), b[i+1]){
-					dp[i+1][k] += dp[i][j].val();
-				}
-			}
-		}
+	string n;
+	int k;
+	cin >> n >> k;
+	string s;
+
+	if(n == "0") {
+		cout << 0 << endl;
+		return 0;
 	}
-	mint ans = 0;
-	REP(i, 3001){
-		ans += dp[n][i].val();
+
+	REP(_, k){
+		n = fix8to5(base10tobase9(base8tobase10(n)));
 	}
-	cout << ans.val() << endl;
+	cout << n << endl;
 }

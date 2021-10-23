@@ -19,6 +19,7 @@ using ll = long long;
 #define yesno(T) if(T){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
 #define YesNo(T) if(T){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
 
+#define Graph vector<vector<int> >
 #define PII pair<int,int>
 #define VI vector<int>
 #define VVI vector<vector<int> > //VVI a(n, vector<int>(m));
@@ -45,9 +46,9 @@ inline bool chmax(T &a, T b) {
 template <class T>
 T GCD(T a, T b) {
 	if (b == 0)
-	return a;
+		return a;
 	else
-	return GCD(b, a % b);
+		return GCD(b, a % b);
 }
 template <class T>
 inline T LCM(T a, T b) {
@@ -56,34 +57,26 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-using mint = modint998244353;
+
 
 signed main(){
-	ios::sync_with_stdio(false);
-	cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
-	int n;
-	cin >> n;
-	VI a(n+1);
-	a[0] = 0;
-	REP(i,n) cin >> a[i+1];
-	VI b(n+1);
-	b[0] = 0;
-	REP(i,n) cin >> b[i+1];
-	vector<vector<mint> > dp(n+1, vector<mint>(3000, 0));
-	dp[0][0] = 1;
-	REP(i,n){
-		FOR(j, min(a[i], b[i]), max(a[i+1], b[i+1])){
-			if(dp[i][j].val() != 0){
-				FOR(k, max(j, (ll)a[i+1]), b[i+1]){
-					dp[i+1][k] += dp[i][j].val();
-				}
-			}
+	int h, w;
+	cin >> h >> w;
+	VVI a(h, VI(w));
+	VI sumH(h, 0), sumW(w, 0);
+	REP(i,h) REP(j,w) {
+		cin >> a[i][j];
+		sumH[i] += a[i][j];
+		sumW[j] += a[i][j];
+	}
+
+	REP(i,h){
+		REP(j,w){
+			cout << sumH[i] + sumW[j] - a[i][j] << " ";
 		}
+		cout << endl;
 	}
-	mint ans = 0;
-	REP(i, 3001){
-		ans += dp[n][i].val();
-	}
-	cout << ans.val() << endl;
 }
