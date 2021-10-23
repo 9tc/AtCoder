@@ -19,6 +19,7 @@ using ll = long long;
 #define yesno(T) if(T){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
 #define YesNo(T) if(T){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
 
+#define Graph vector<vector<int> >
 #define PII pair<int,int>
 #define VI vector<int>
 #define VVI vector<vector<int> > //VVI a(n, vector<int>(m));
@@ -56,7 +57,7 @@ inline T LCM(T a, T b) {
 
 using namespace std;
 using namespace atcoder;
-using mint = modint998244353;
+
 
 signed main(){
 	ios::sync_with_stdio(false);
@@ -64,26 +65,23 @@ signed main(){
 
 	int n;
 	cin >> n;
-	VI a(n+1);
-	a[0] = 0;
-	REP(i,n) cin >> a[i+1];
-	VI b(n+1);
-	b[0] = 0;
-	REP(i,n) cin >> b[i+1];
-	vector<vector<mint> > dp(n+1, vector<mint>(3000, 0));
-	dp[0][0] = 1;
+	VVI cl(2, VI(n+1, 0)); //
+	int c, p;
 	REP(i,n){
-		FOR(j, min(a[i], b[i]), max(a[i+1], b[i+1])){
-			if(dp[i][j].val() != 0){
-				FOR(k, max(j, (ll)a[i+1]), b[i+1]){
-					dp[i+1][k] += dp[i][j].val();
-				}
-			}
+		cin >> c >> p;
+		cl[c-1][i+1] = p;
+	}
+
+	REP(i,2){
+		REP(j, n){
+			cl[i][j+1] += cl[i][j];
 		}
 	}
-	mint ans = 0;
-	REP(i, 3001){
-		ans += dp[n][i].val();
+
+	int q, l, r;
+	cin >> q;
+	REP(_, q){
+		cin >> l >> r;
+		cout << cl[0][r] - cl[0][l-1] << " " << cl[1][r] - cl[1][l-1]<< endl;
 	}
-	cout << ans.val() << endl;
 }
