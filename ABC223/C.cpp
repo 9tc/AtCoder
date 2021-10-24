@@ -63,37 +63,26 @@ signed main(){
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int n, m;
-	cin >> n >> m;
+	cout << DDD;
 
-	VVI g(n);
-	int u, v;
-	VI inedge(n, 0);
-	REP(i,m){
-		cin >> u >> v;
-		--u; --v;
-		g[u].PB(v);
-		++inedge[v];
+	int n;
+	cin >> n;
+	VPII a(n);
+
+	REP(i,n) {
+		cin >> a[i].F >> a[i].S;
 	}
 
-	priority_queue<int, vector<int>, greater<int> > que;
-	REP(i,n) if(inedge[i] == 0) que.push(i);
-
-	VI ans;
-
-	while(!que.empty()){
-		int i = que.top(); que.pop();
-
-		ans.PB(i);
-		for(int j: g[i]){
-			--inedge[j];
-			if(inedge[j] == 0) que.push(j);
-		}
+	double r = 0;
+	REP(i,n){
+		r += 1.0 * a[i].F / a[i].S;
 	}
+	r /= 2.0;
 
-	if(ans.size() != n) cout << -1 << endl;
-	else {
-		REP(i,n) cout << ans[i]+1 << " ";
-		cout << endl;
+	double ans = 0;
+	REP(i,n){
+		ans += min(1.0 *a[i].F, r * a[i].S);
+		r -= min(1.0 * a[i].F/a[i].S, r);
 	}
+	cout << ans << endl;
 }
