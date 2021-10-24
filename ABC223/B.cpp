@@ -63,37 +63,19 @@ signed main(){
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 
-	int n, m;
-	cin >> n >> m;
+	string s;
+	cin >> s;
 
-	VVI g(n);
-	int u, v;
-	VI inedge(n, 0);
-	REP(i,m){
-		cin >> u >> v;
-		--u; --v;
-		g[u].PB(v);
-		++inedge[v];
+	vector<string> st;
+	st.PB(s);
+	int n = s.length()-1;
+	REP(_, n){
+		s = s.substr(1) + s[0];
+		st.PB(s);
 	}
 
-	priority_queue<int, vector<int>, greater<int> > que;
-	REP(i,n) if(inedge[i] == 0) que.push(i);
+	sort(ALL(st));
 
-	VI ans;
-
-	while(!que.empty()){
-		int i = que.top(); que.pop();
-
-		ans.PB(i);
-		for(int j: g[i]){
-			--inedge[j];
-			if(inedge[j] == 0) que.push(j);
-		}
-	}
-
-	if(ans.size() != n) cout << -1 << endl;
-	else {
-		REP(i,n) cout << ans[i]+1 << " ";
-		cout << endl;
-	}
+	cout << st[0] << endl;
+	cout << st[st.size()-1] << endl;
 }
