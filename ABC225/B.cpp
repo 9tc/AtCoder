@@ -59,69 +59,23 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
-struct Node {
-    Node *next, *prev;
-    int data;
-};
+signed main(){
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
 
-void merge(Node* p1, Node* p2) {
-  p1->next = p2;
-  p2->prev = p1;
-}
-
-void separate(Node* p1, Node* p2) {
-  p1->next = NULL;
-  p2->prev = NULL;
-}
-
-int main() {
-    int n, q;
-    cin >> n >> q;
-    vector<Node> v(n);
-    REP(i, n) {
-        v[i].next = NULL;
-        v[i].prev = NULL;
-        v[i].data = i + 1;
-    }
-
-    REP(i, q) {
-        int t;
-        cin >> t;
-
-        if (t == 1) {
-            int x, y;
-            cin >> x >> y;
-						x--; y--;
-            merge(&v[x], &v[y]);
-        } else if (t == 2) {
-            int x, y;
-            cin >> x >> y;
-						x--; y--;
-            separate(&v[x], &v[y]);
-        } else {
-            int x;
-            cin >> x;
-						x--;
-            Node* nd = &v[x];
-            Node* nd2;
-            while (true) {
-                if (nd->prev == NULL) break;
-                nd = nd->prev;
-            }
-            nd2 = nd;
-            int cnt = 0;
-            while (true) {
-                cnt++;
-                if (nd->next == NULL) break;
-                nd = nd->next;
-            }
-            cout << cnt;
-            while (true) {
-                cout << " " << (nd2->data);
-                if (nd2->next == NULL) break;
-                nd2 = nd2->next;
-            }
-            cout << endl;
-        }
-    }
+	int n;
+	cin >> n;
+	VVI g(n);
+	int a, b;
+	REP(i,n-1){
+		cin >> a >> b;
+		--a; --b;
+		g[a].PB(b);
+		g[b].PB(a);
+	}
+	bool ans = true;
+	REP(i,n){
+		if(g[i].size() != 1 && g[i].size() != n-1) ans = false;
+	}
+	YesNo(ans);
 }
