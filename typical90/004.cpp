@@ -67,7 +67,7 @@ signed main(){
 	cin >> h >> w;
 	VVI a(h, VI(w));
 	VI sumH(h, 0), sumW(w, 0);
-	REP(i,h) REP(j,w) {
+	REP(aaa,h) REP(j,w) {
 		cin >> a[i][j];
 		sumH[i] += a[i][j];
 		sumW[j] += a[i][j];

@@ -59,69 +59,48 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
-struct Node {
-    Node *next, *prev;
-    int data;
-};
-
-void merge(Node* p1, Node* p2) {
-  p1->next = p2;
-  p2->prev = p1;
-}
-
-void separate(Node* p1, Node* p2) {
-  p1->next = NULL;
-  p2->prev = NULL;
-}
+using mint = modint998244353;
 
 int main() {
-    int n, q;
-    cin >> n >> q;
-    vector<Node> v(n);
-    REP(i, n) {
-        v[i].next = NULL;
-        v[i].prev = NULL;
-        v[i].data = i + 1;
-    }
+    int n, m;
+		cin >> n >> m;
 
-    REP(i, q) {
-        int t;
-        cin >> t;
+		VVI g(n);
+		int u, v;
+		REP(i,m){
+			cin >> u >> v;
+			--u; --v;
+			g[u].PB(v);
+			g[v].PB(u);
+		}
+		vector<bool> f(n, false);
+		ll mans = 0;
+		REP(i, n){
+			if(f[i]) continue;
+			queue<ll> q;
+			q.push(i);
+			f[i] = true;
+			ll c0 = g[i].size();
+			ll c1 = 1;
+			++mans;
+			while(!q.empty()){
+				auto t = q.front(); q.pop();
+				for (auto s: g[t]) {
+					if (!f[s]) {
+						f[s] = true;
+						c0 += g[s].size();
+						++c1;
+						q.push(s);
+					}
+				}
+			}
 
-        if (t == 1) {
-            int x, y;
-            cin >> x >> y;
-						x--; y--;
-            merge(&v[x], &v[y]);
-        } else if (t == 2) {
-            int x, y;
-            cin >> x >> y;
-						x--; y--;
-            separate(&v[x], &v[y]);
-        } else {
-            int x;
-            cin >> x;
-						x--;
-            Node* nd = &v[x];
-            Node* nd2;
-            while (true) {
-                if (nd->prev == NULL) break;
-                nd = nd->prev;
-            }
-            nd2 = nd;
-            int cnt = 0;
-            while (true) {
-                cnt++;
-                if (nd->next == NULL) break;
-                nd = nd->next;
-            }
-            cout << cnt;
-            while (true) {
-                cout << " " << (nd2->data);
-                if (nd2->next == NULL) break;
-                nd2 = nd2->next;
-            }
-            cout << endl;
-        }
-    }
+			if (c0 != c1 * 2){
+				cout << 0 << endl;
+				return 0;
+			}
+		}
+		mint ans = 1;
+		REP(i,mans) ans *= 2;
+		cout << ans.val() << endl;
 }
