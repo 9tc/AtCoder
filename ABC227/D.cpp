@@ -5,11 +5,11 @@ using ll = long long;
 #define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
 #define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
 #define REPR(i, n) for (ll i = ll(n) - 1; (i) >= 0; -- (i))
-#define FOR3R(i, m, n) for (ll i = ll(n) - 1; (i) >= ll(m); -- (i))
+#define FORR(i, m, n) for (ll i = ll(n); (i) >= ll(m); -- (i))
 #define ALL(x) x.begin(),x.end()
 
 #define INF (int)1e9 //10^9:∞
-#define LLINF (long long)(1LL<<62)-1
+#define LLINF (long long)1e12
 #define MOD (int)1e9+7 //10^9+7:合同式の法
 #define PI 3.141592653589
 #define PB push_back
@@ -59,6 +59,23 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
+
 int main() {
-    cout << LLINF << endl;
+	int n, k;
+	cin >> n >> k;
+	vector<ll> a(n);
+	REP(i,n) cin >> a[i];
+
+	sort(ALL(a));
+
+	ll l = 0, r = 1e18 / k;
+	while(r - l > 1){
+		ll mid = (l + r) / 2;
+		ll sum = 0;
+
+		REP(i,n) sum += min(a[i], mid);
+		if(sum >= k * mid) l = mid;
+		else r = mid;
+	}
+	cout << l << endl;
 }

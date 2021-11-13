@@ -5,11 +5,11 @@ using ll = long long;
 #define REP(i, n) for (ll i = 0; (i) < ll(n); ++ (i))
 #define FOR(i, m, n) for (ll i = (m); (i) <= ll(n); ++ (i))
 #define REPR(i, n) for (ll i = ll(n) - 1; (i) >= 0; -- (i))
-#define FOR3R(i, m, n) for (ll i = ll(n) - 1; (i) >= ll(m); -- (i))
+#define FORR(i, m, n) for (ll i = ll(n); (i) >= ll(m); -- (i))
 #define ALL(x) x.begin(),x.end()
 
 #define INF (int)1e9 //10^9:∞
-#define LLINF (long long)(1LL<<62)-1
+#define LLINF (long long)1e12
 #define MOD (int)1e9+7 //10^9+7:合同式の法
 #define PI 3.141592653589
 #define PB push_back
@@ -59,6 +59,33 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
+ll divisorsum(ll n){
+	ll sum = 0;
+	FOR(i, 1, n){
+		for(int j = 1; j * j <= i; ++j){
+			if(i % j == 0){
+				if(i / j == j) sum += j;
+				else sum += j * i/j;
+			}
+		}
+	}
+	return sum;
+}
+
+
 int main() {
-    cout << LLINF << endl;
+	ll n;
+	cin >> n;
+
+	ll ans = 0;
+	FOR(a, 1, n){
+		ll p = ans;
+		FOR(b, a, n) {
+			if(n / (a * b) - b + 1 <= 0) break;
+			ans += n / (a * b) - b + 1;
+		}
+		if(p == ans) break;
+	}
+
+	cout << ans << endl;
 }
