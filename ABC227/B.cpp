@@ -9,7 +9,7 @@ using ll = long long;
 #define ALL(x) x.begin(),x.end()
 
 #define INF (int)1e9 //10^9:∞
-#define LLINF (long long)(1LL<<62)-1
+#define LLINF (long long)1e12
 #define MOD (int)1e9+7 //10^9+7:合同式の法
 #define PI 3.141592653589
 #define PB push_back
@@ -60,5 +60,20 @@ using namespace std;
 using namespace atcoder;
 
 int main() {
-    cout << LLINF << endl;
+    int n;
+		cin >> n;
+		int s;
+		int ans = 0;
+		REP(_, n){
+			cin >> s;
+			FOR(a,1,1000){
+				int st = s - 3 * a;
+				if(st < 1) continue;
+				if(st % (4*a + 3) == 0){
+					++ans;
+					break;
+				}
+			}
+		}
+		cout << n -ans << endl;
 }
