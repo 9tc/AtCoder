@@ -58,59 +58,19 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
-struct UnionFind{
-	vector<int> par, siz;
-
-	UnionFind(int n) : par(n, -1), siz(n,1) {}
-
-	int root(int x){
-		if(par[x] == -1) return x;
-		else return par[x] = root(par[x]);
-	}
-
-	bool issame(int x, int y){
-		return root(x) == root(y);
-	}
-
-	bool unite(int x, int y){
-		x = root(x);
-		y = root(y);
-		if(x == y) return false;
-		if(siz[x] < siz[y]) swap(x, y);
-		par[y] = x;
-		siz[x] += siz[y];
-		return true;
- 	}
-
-	int size(int x){
-		return siz[root(x)];
-	}
-};
-
 int main() {
-	int n, k, l;
-	cin >> n >> k >> l;
+    int n;
+		cin >> n;
+		VI a(n);
+		REP(i,n) cin >> a[i];
+		VI b(n);
+		REP(i,n) cin >> b[i];
+		sort(ALL(a));
+		sort(ALL(b));
 
-	UnionFind road(n), train(n);
-	int p, q;
-	REP(i, k){
-		cin >> p >> q;
-		--p, --q;
-		road.unite(p,q);
-	}
-
-	int r, s;
-	REP(i, l){
-		cin >> r >> s;
-		--r; --s;
-		train.unite(r,s);
-	}
-
-	map<pair<int,int>, int> mp;
-	REP(i,n){
-		++mp[{road.root(i), train.root(i)}];
-	}
-
-	REP(i,n) cout << mp[{road.root(i), train.root(i)}] << " ";
-	cout << endl;
+		ll ans = 0;
+		REP(i,n){
+			ans += abs(a[i] - b[i]);
+		}
+		cout << ans << endl;
 }
