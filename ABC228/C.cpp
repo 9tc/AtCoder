@@ -88,32 +88,25 @@ struct UnionFind{
 };
 
 int main() {
-	int n, k, l;
-	cin >> n >> k >> l;
+	int n, k;
+	cin >> n >> k;
 
-	UnionFind road(n), train(n);
+	VI p(n, 0);
 
-	int p, q;
-	REP(i, k){
-		cin >> p >> q;
-		--p, --q;
-		road.unite(p,q);
+
+	int a, b, c;
+	REP(i,n){
+		cin >> a >> b >> c;
+		p[i] = a + b + c;
 	}
 
-	int r, s;
-	for(int i = 0; i < l; ++i){
-		cin >> r >> s;
-		--r; --s;
-		train.unite(r,s);
+	VI q(n);
+	REP(i,n) q[i] = p[i];
+
+	sort(ALL(q));
+
+	REP(i,n){
+		YesNo(n - (upper_bound(ALL(q), p[i] + 300) - q.begin()) < k);
 	}
 
-	map<pair<int,int>, int> mp;
-	for(int i = 0,i < n; ++i){
-		++mp[{road.root(i), train.root(i)}];
-	}
-
-	for(int i = 0; i < n; ++i) {
-		cout << mp[{road.root(i), train.root(i)}] << " ";
-	}
-	cout << endl;
 }
