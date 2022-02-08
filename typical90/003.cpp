@@ -58,42 +58,52 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
-using mint = modint998244353;
+// sから最も遠い頂点とその長さのペアを返す
+PII BFS_l(int n, Graph &G, int s){
+  VI dist(n, INF);
+  queue<int> Q;
+  Q.push(s);
+  dist[s] = 0;
 
+  while(!Q.empty()){
+    int pos = Q.front(); Q.pop();
+    for(int to: G[pos]){
+      if(dist[to] == INF){
+        dist[to] = dist[pos] + 1;
+        Q.push(to);
+      }
+    }
+  }
 
-ll p10(int n){
-  if(n == 1) return 1;
-  return 10 * p10(n-1);
+  int maxDist = -1, maxDistVertex = -1;
+  REP(i,n){
+    if(maxDist < dist[i]){
+      maxDist = dist[i];
+      maxDistVertex = i;
+    }
+  }
+
+  return {maxDistVertex, maxDist};
 }
 
 int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  string s;
-  cin >> s;
+	int n;
+  cin >> n;
 
-  ll n = stoll(s);
-
-
-  ll ans = 0;
-  ll r = 9;
-  REP(i, s.length()-1){
-    //cout << 1 << "から" << r << "のそうわ" << endl;
-    if(r % 2 != 0) ans += ((r+1) / 2 % 998244353) * (r % 998244353)% 998244353;
-    else  ans += ((r / 2 % 998244353) * ((r+1) % 998244353))% 998244353;
-    r = r * 10;
+  Graph G(n);
+  int u, v;
+  REP(i,n-1){
+    cin >> u >> v;
+    --u, --v;
+    G[u].PB(v);
+    G[v].PB(u);
   }
 
-  //cout << ans << endl;
+  auto maxDist = BFS_l(n, G, 0);
+  maxDist = BFS_l(n, G, maxDist.F);
 
-
-  n -= p10(s.length());
-  n += 1;
-  //cout << n << endl;
-
-  if(n % 2 == 0) ans += (n / 2% 998244353) * ((n+1) % 998244353)% 998244353;
-  else ans += (n % 998244353) * ((n+1)/2 % 998244353)% 998244353;
-
-  cout << ans % 998244353  << endl;
+  cout << maxDist.S + 1 << endl;
 }

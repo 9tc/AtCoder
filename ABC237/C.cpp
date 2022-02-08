@@ -58,13 +58,6 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
-using mint = modint998244353;
-
-
-ll p10(int n){
-  if(n == 1) return 1;
-  return 10 * p10(n-1);
-}
 
 int main(){
   ios::sync_with_stdio(false);
@@ -72,28 +65,29 @@ int main(){
 
   string s;
   cin >> s;
-
-  ll n = stoll(s);
-
-
-  ll ans = 0;
-  ll r = 9;
-  REP(i, s.length()-1){
-    //cout << 1 << "から" << r << "のそうわ" << endl;
-    if(r % 2 != 0) ans += ((r+1) / 2 % 998244353) * (r % 998244353)% 998244353;
-    else  ans += ((r / 2 % 998244353) * ((r+1) % 998244353))% 998244353;
-    r = r * 10;
+  int lastAcnt = 0;
+  while(s[s.length()-1] == 'a'){
+    s.pop_back();
+    ++lastAcnt;
   }
 
-  //cout << ans << endl;
+  int frontAcnt = 0;
+  REP(i, s.length()){
+    if(s[i] == 'a') ++frontAcnt;
+    else break;
+  }
 
+  if(lastAcnt < frontAcnt){
+    cout << "No" << endl;
+    return 0;
+  }
 
-  n -= p10(s.length());
-  n += 1;
-  //cout << n << endl;
+  while(frontAcnt--) s.push_back('a');
 
-  if(n % 2 == 0) ans += (n / 2% 998244353) * ((n+1) % 998244353)% 998244353;
-  else ans += (n % 998244353) * ((n+1)/2 % 998244353)% 998244353;
+  bool ans = true;
+  REP(i, s.length()/2){
+    if(s[i] != s[s.length()-1-i]) ans = false;
+  }
 
-  cout << ans % 998244353  << endl;
+  YesNo(ans);
 }
