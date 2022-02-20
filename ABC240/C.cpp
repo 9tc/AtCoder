@@ -63,13 +63,20 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int a, b;
-  cin >> a >> b;
-  if(a > b){
-    int t = a;
-    a = b;
-    b = t;
+	int n, x;
+  cin >> n >> x;
+  VVI dp(n+1, VI(x+1, 0));
+  dp[0][0] = 1;
+  REP(i,n){
+    int a, b;
+    cin >> a >> b;
+    REP(j, x+1){
+      if(dp[i][j] == 1){
+        if(j + a <= x) dp[i+1][j+a] = 1;
+        if(j + b <= x) dp[i+1][j+b] = 1;
+      }
+    }
   }
-  if(b == 10 && a == 1 || b - a == 1) cout << "Yes" << endl;
-  else cout << "No" << endl;
+
+  YesNo(dp[n][x] == 1);
 }

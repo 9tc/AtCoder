@@ -63,13 +63,24 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int a, b;
-  cin >> a >> b;
-  if(a > b){
-    int t = a;
-    a = b;
-    b = t;
+	int n;
+  cin >> n;
+
+  VPII balls; // {k, 個数}
+  int a;
+  int ans = 0;
+  while(n--){
+    cin >> a;
+    ++ans;
+    if(balls.empty() || balls[balls.size()-1].first != a){
+      balls.push_back({a, 1});
+    }else{
+      ++balls[balls.size()-1].second;
+      if(balls[balls.size()-1].second == balls[balls.size()-1].first){
+        ans -= balls[balls.size()-1].second;
+        balls.pop_back();
+      }
+    }
+    cout << ans << endl;
   }
-  if(b == 10 && a == 1 || b - a == 1) cout << "Yes" << endl;
-  else cout << "No" << endl;
 }

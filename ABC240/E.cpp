@@ -58,18 +58,52 @@ inline T LCM(T a, T b) {
 using namespace std;
 using namespace atcoder;
 
+VPII ans;
+
+vector<bool> seen;
+int bg; // 区間の良い感じの数を格納
+
+void dfs(const Graph &g, int v){
+  seen[v] = true;
+  int cnt = 0;
+  int minBg = INF, maxBg = 0;
+
+  for(auto nextV: g[v]){
+    if(seen[nextV]) continue;
+    ++cnt;
+    dfs(g, nextV);
+    if(ans[nextV].F != -1) chmin(minBg, ans[nextV].F);
+    if(ans[nextV].S != -1) chmax(maxBg, ans[nextV].S);
+  }
+  if(cnt == 0){
+    ans[v] = {bg, bg};
+    ++bg;
+  }else{
+    ans[v] = {minBg, maxBg};
+  }
+}
 
 int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int a, b;
-  cin >> a >> b;
-  if(a > b){
-    int t = a;
-    a = b;
-    b = t;
+	int n;
+  cin >> n;
+  Graph g(n);
+  REP(i,n-1){
+    int u, v;
+    cin >> u >> v;
+    --u, --v;
+    g[u].PB(v);
+    g[v].PB(u);
   }
-  if(b == 10 && a == 1 || b - a == 1) cout << "Yes" << endl;
-  else cout << "No" << endl;
+  bg = 1;
+  ans.resize(n);
+  seen.assign(n, false);
+
+  dfs(g, 0);
+
+  REP(i,n){
+    cout << ans[i].F << " " << ans[i].S << endl;
+  }
 }

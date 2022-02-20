@@ -63,13 +63,13 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int a, b;
-  cin >> a >> b;
-  if(a > b){
-    int t = a;
-    a = b;
-    b = t;
+	int n;
+  cin >> n;
+  set<int> st;
+  int t;
+  REP(i,n){
+    cin >> t;
+    st.insert(t);
   }
-  if(b == 10 && a == 1 || b - a == 1) cout << "Yes" << endl;
-  else cout << "No" << endl;
+  cout << st.size() << endl;
 }
