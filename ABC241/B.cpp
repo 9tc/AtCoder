@@ -63,21 +63,23 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n, x;
-  cin >> n >> x;
-  vector<map<int, int>> dp(n+1);
-  dp[0][1] = 1;
-
-  REP(i, n){
-    int l;
-    cin >> l;
-    REP(j,l){
-      int a;
-      cin >> a;
-      for(int k: dp[i]){
-        if(k * a <= x) dp[i+1][k * a] += dp[i][k];
-      }
+  int n, m;
+  cin >> n >> m;
+  int a;
+  map<int, int> mp;
+  REP(i,n) {
+    cin >> a;
+    ++mp[a];
+  }
+  int b;
+  REP(i,m){
+    cin >> b;
+    if(mp[b] != 0){
+      --mp[b];
+    }else{
+      cout << "No" << endl;
+      return 0;
     }
   }
-  cout << dp[n][x] << endl;
+  cout << "Yes" << endl;
 }

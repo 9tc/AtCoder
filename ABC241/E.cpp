@@ -63,21 +63,40 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n, x;
-  cin >> n >> x;
-  vector<map<int, int>> dp(n+1);
-  dp[0][1] = 1;
+	int n;
+  ll k;
+  cin >> n >> k;
+  vector<ll> a(n);
+  REP(i,n) cin >> a[i];
 
-  REP(i, n){
-    int l;
-    cin >> l;
-    REP(j,l){
-      int a;
-      cin >> a;
-      for(int k: dp[i]){
-        if(k * a <= x) dp[i+1][k * a] += dp[i][k];
-      }
+  VI pre(n, -1);
+
+  vector<ll> s(n, 0);
+  pre[0] = 0;
+
+  int t;
+  int loop;
+
+  ll ans;
+
+  REP(i,n){
+    s[i+1] = s[i] + a[s[i] % n];
+    if(pre[s[i+1] % n] != -1){
+      t = pre[s[i+1] % n];
+      loop = i+1;
+      break;
     }
+    pre[s[i+1] % n] = i + 1;
   }
-  cout << dp[n][x] << endl;
+
+  if(k <= t) ans = s[k];
+  else{
+    int p = loop - t;
+    ll x = s[loop] - s[t];
+    ll a = (k - t - 1) / p;
+    ll b = (k - t - 1) % p;
+    ans = s[t + b + 1] + (a * x);
+  }
+
+  cout << ans << endl;
 }

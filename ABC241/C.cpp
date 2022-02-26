@@ -63,21 +63,78 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n, x;
-  cin >> n >> x;
-  vector<map<int, int>> dp(n+1);
-  dp[0][1] = 1;
+	int n;
+  cin >> n;
+  vector<string> s(n);
+  REP(i,n) cin >> s[i];
 
-  REP(i, n){
-    int l;
-    cin >> l;
-    REP(j,l){
-      int a;
-      cin >> a;
-      for(int k: dp[i]){
-        if(k * a <= x) dp[i+1][k * a] += dp[i][k];
+  VVI t(n, VI(n, 0));
+  REP(i,n)REP(j,n) if(s[i][j] == '#') t[i][j] = 1;
+
+  bool isA = false;
+
+  // yoko
+  VVI lt(n+1, VI(n+1, 0));
+  REP(i,n){
+    REP(j,n){
+      lt[i][j+1] = lt[i][j] + t[i][j];
+      if(j >= 6) lt[i][j+1] -= t[i][j-6];
+
+      if(lt[i][j+1] >= 4) {
+
+        isA = true;
       }
     }
   }
-  cout << dp[n][x] << endl;
+
+
+
+  // tate
+  VVI ut(n+1, VI(n+1, 0));
+  REP(i,n){
+    REP(j,n){
+      ut[i+1][j] = ut[i][j] + t[i][j];
+      if(i >= 6) ut[i+1][j] -= t[i-6][j];
+
+      if(ut[i+1][j] >= 4) {
+
+        isA = true;
+      }
+    }
+  }
+
+
+
+  // naname
+  VVI nt(n+1, VI(n+1, 0));
+  REP(i,n){
+    REP(j,n){
+      nt[i+1][j+1] = nt[i][j] + t[i][j];
+      if(i >= 6 && j >= 6) {
+        nt[i+1][j+1] -= t[i-6][j-6];
+
+      }
+
+      if(nt[i+1][j+1] >= 4&& i >= 5 && j >= 5) {
+
+        isA = true;
+      }
+    }
+  }
+
+  REP(i,n) reverse(ALL(t[i]));
+  VVI nnt(n+1, VI(n+1, 0));
+  REP(i,n){
+    REP(j,n){
+      nnt[i+1][j+1] = nnt[i][j] + t[i][j];
+      if(i >= 6 && j >= 6) nnt[i+1][j+1] -= t[i-6][j-6];
+
+      if(nnt[i+1][j+1] >= 4 && i >= 5 && j >= 5) {
+        isA = true;
+      }
+    }
+  }
+
+
+  YesNo(isA);
 }
