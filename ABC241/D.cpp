@@ -63,21 +63,41 @@ int main(){
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-	int n, x;
-  cin >> n >> x;
-  vector<map<int, int>> dp(n+1);
-  dp[0][1] = 1;
+	int q;
+  cin >> q;
 
-  REP(i, n){
-    int l;
-    cin >> l;
-    REP(j,l){
-      int a;
-      cin >> a;
-      for(int k: dp[i]){
-        if(k * a <= x) dp[i+1][k * a] += dp[i][k];
+  multiset<ll> st;
+  while(q--){
+    int c;
+    cin >> c;
+    if(c == 1){
+      ll x;
+      cin >> x;
+      st.insert(x);
+    }else{
+      ll x, k;
+      cin >> x >> k;
+      if(c == 2){
+        auto t = st.upper_bound(x);
+        bool isAns = true;
+        REP(i,k) if(prev(t,i) == st.begin()){
+          isAns = false;
+          break;
+        }
+
+        if(isAns) cout << *prev(t, k) << endl;
+        else cout << -1 << endl;
+      }else{
+        auto t = st.lower_bound(x);
+        bool isAns = true;
+        REP(i,k) if(next(t,i) == st.end()){
+          isAns = false;
+          break;
+        }
+
+        if(isAns) cout << *next(t, k-1) << endl;
+        else cout << -1 << endl;
       }
     }
   }
-  cout << dp[n][x] << endl;
 }
